@@ -14,7 +14,7 @@ Instala las dependencias e inicia el servidor de desarrollo:
 ```bash
 npm install
 npm run dev
-```
+```  
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
