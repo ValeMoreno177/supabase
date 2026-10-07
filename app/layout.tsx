@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./global.css";
+import "./globals.css";
 import BottomNav from "./components/BottomNav";
 
 const geistSans = Geist({
@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Supagram",
+  title: "Suplatzigram",
   description: "App inspirada en Instagram - Curso de Supabase de Platzi",
 };
 
