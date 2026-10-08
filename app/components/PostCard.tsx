@@ -4,7 +4,13 @@ import { getTimeAgo } from "../utils/time";
 import { Post } from "../mocks/posts";
 import { DEFAULT_AVATAR } from "../lib/defaults";
 
-export default function PostCard({ post, onLike }: { post: Post; onLike: (id: number | string) => void }) {
+export default function PostCard({
+  post,
+  onLike,
+}: {
+  post: Post;
+  onLike: (id: number | string) => void;
+}) {
   return (
     <article className="bg-card-bg border border-border rounded-xl overflow-hidden shadow-sm">
       {/* Header con usuario y avatar */}
@@ -12,14 +18,18 @@ export default function PostCard({ post, onLike }: { post: Post; onLike: (id: nu
         <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
           <Image
             src={post.user?.avatar || DEFAULT_AVATAR}
-            alt={post.user?.username || 'default user'}
+            alt={post.user?.username || "usuario"}
             fill
             className="object-cover"
           />
         </div>
         <div className="flex flex-col">
-          <span className="font-semibold text-foreground">{post.user?.username || 'default user'}</span>
-          <span className="text-xs text-foreground/50">{getTimeAgo(new Date (post.created_at))}</span>
+          <span className="font-semibold text-foreground">
+            {post.user?.username || "usuario"}
+          </span>
+          <span className="text-xs text-foreground/50">
+            {getTimeAgo(new Date(post.created_at))}
+          </span>
         </div>
       </div>
 
@@ -27,7 +37,7 @@ export default function PostCard({ post, onLike }: { post: Post; onLike: (id: nu
       <div className="relative w-full aspect-square">
         <Image
           src={post.image_url}
-          alt={`Post de ${post.user?.username || 'default user'}`}
+          alt={`Post de ${post.user?.username || "usuario"}`}
           fill
           className="object-cover"
         />
@@ -35,7 +45,6 @@ export default function PostCard({ post, onLike }: { post: Post; onLike: (id: nu
 
       {/* Acciones y caption */}
       <div className="p-4">
-        {/* Botón de like con contador */}
         <div className="flex items-center gap-2">
           <button
             onClick={() => onLike(post.id)}
@@ -49,9 +58,8 @@ export default function PostCard({ post, onLike }: { post: Post; onLike: (id: nu
           </span>
         </div>
 
-        {/* Caption */}
         <p className="mt-2 text-foreground">
-          <span className="font-semibold">{post.user?.username || 'default user'}</span>{" "}
+          <span className="font-semibold">{post.user?.username || "usuario"}</span>{" "}
           <span className="text-foreground/80">{post.caption}</span>
         </p>
       </div>
