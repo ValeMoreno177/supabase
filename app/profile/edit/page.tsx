@@ -152,11 +152,11 @@ export default function EditProfilePage() {
       // Subir avatar si hay uno nuevo
       if (avatarFile) {
         const fileExt = avatarFile.name.split(".").pop();
-        const fileName = `${profile.id}-${Date.now()}.${fileExt}`;
-        const filePath = `profile/${fileName}`;
+        const fileName = `${Date.now()}.${fileExt}`;
+        const filePath = `profile/${profile.id}/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-          .from("Supagram")
+          .from("supagram")
           .upload(filePath, avatarFile, {
             cacheControl: "3600",
             upsert: true,
@@ -165,7 +165,7 @@ export default function EditProfilePage() {
         if (uploadError) throw uploadError;
 
         const { data: urlData } = supabase.storage
-          .from("Supagram")
+          .from("supagram")
           .getPublicUrl(filePath);
 
         avatarUrl = urlData.publicUrl;

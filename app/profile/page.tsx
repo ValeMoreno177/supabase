@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 interface Profile {
@@ -12,6 +13,11 @@ interface Profile {
 }
 
 export default function ProfilePage() {
+  const router = useRouter();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+  };
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -138,6 +144,12 @@ export default function ProfilePage() {
           >
             Editar perfil
           </Link>
+          <button
+            onClick={handleLogout}
+            className="text-sm text-foreground/60 hover:text-red-500 transition-colors"
+          >
+            Cerrar sesión
+          </button>
         </div>
       </main>
     </div>

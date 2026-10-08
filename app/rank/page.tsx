@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Post } from "../mocks/posts";
-import Modal from "../components/Modal";
-import { supabase } from "../lib/supabase";
 import HeartIcon from "../components/Hearticion";
+import Modal from "../components/Modal";
+import { fetchPosts } from "../lib/posts";
 
 
 export default function RankPage() {
@@ -13,23 +13,7 @@ export default function RankPage() {
   const [posts, setPosts] = useState<Post[]>([])
 
   useEffect(() => {
-    async function getPosts() {
-      const { data: posts } = await supabase
-      .from('posts')
-      .select('*')
-      //.gte('likes', 50)
-      .order('likes', {ascending: false})
-      .range(0, 11)
-
-
-
-      if (posts) {
-        setPosts(posts)
-        console.log(posts)
-    }
-    }
-
-    getPosts()
+    fetchPosts({ orderBy: "likes", limit: 12 }).then(setPosts);
   }, [])
   const[selectedPost, setSelectedPost] = useState<Post| null>(null);
   

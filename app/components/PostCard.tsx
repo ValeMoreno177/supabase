@@ -1,16 +1,17 @@
 import Image from "next/image";
+import HeartIcon from "./Hearticion";
 import { getTimeAgo } from "../utils/time";
 import { Post } from "../mocks/posts";
-import HeartIcon from "./Hearticion";
+import { DEFAULT_AVATAR } from "../lib/defaults";
 
-function PostCard({ post, onLike }: { post: Post; onLike: (id: number | string) => void }) {
+export default function PostCard({ post, onLike }: { post: Post; onLike: (id: number | string) => void }) {
   return (
     <article className="bg-card-bg border border-border rounded-xl overflow-hidden shadow-sm">
       {/* Header con usuario y avatar */}
       <div className="flex items-center gap-3 p-4">
         <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
           <Image
-            src={post.user?.avatar || 'https://vzhfyibobsgszzgrtont.supabase.co/storage/v1/object/sign/Supagram/profiles/yo.png?token=eyJraWQiOiJhODNlYThjMS00MmIyLTQyMjktOWJjMy1jYTMzMjUzZGU0MWYiLCJhbGciOiJIUzUxMiJ9.eyJ1cmwiOiJTdXBhZ3JhbS9wcm9maWxlcy95by5wbmciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzkwMTk0MDc3LCJleHAiOjE3OTA3OTg4Nzd9.IEyr8ojMm_q7YBVkbgvekqu5yBdaMfm7PfsAhCGOcyRPiICO_W-cBKCUM0QGW6V5fv2W7S_zoO2m9GJ4z6ZMYw'}
+            src={post.user?.avatar || DEFAULT_AVATAR}
             alt={post.user?.username || 'default user'}
             fill
             className="object-cover"

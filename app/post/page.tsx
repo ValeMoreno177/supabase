@@ -2,9 +2,11 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { supabase } from "../lib/supabase";
 
 export default function CreatePage() {
+  const router = useRouter();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [caption, setCaption] = useState("");
@@ -33,17 +35,25 @@ export default function CreatePage() {
   };
 
   const uploadAndCreatePost = async (file: File) => {
-    const userId = "11111111-1111-1111-1111-111111111111";
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      router.push("/auth/login");
+      throw new Error("Inicia sesión para publicar");
+    }
+    const userId = user.id;
 
 
     // 1️⃣ Preparar nombre del archivo
     const fileExt = file.name.split(".").pop();
-    const fileName = `${file.name}-${Date.now()}.${fileExt}`;
-    const filePath = `posts/${fileName}`;
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${fileExt}`;
+    const filePath = `posts/${userId}/${fileName}`;
 
     // 2️⃣ Subir al bucket "images"
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from("Supagram")
+    const { error: uploadError } = await supabase.storage
+      .from("supagram")
       .upload(filePath, file, {
         cacheControl: "3600",
         upsert: false,
@@ -56,7 +66,7 @@ export default function CreatePage() {
 
     // 3️⃣ Obtener URL pública
     const { data: urlData } = supabase.storage
-      .from("Supagram")
+      .from("supagram")
       .getPublicUrl(filePath);
 
     const publicUrl = urlData.publicUrl;
@@ -70,7 +80,6 @@ export default function CreatePage() {
         user_id: userId,
         image_url: publicUrl,
         caption: caption,
-        likes: 0,
       })
       .select("*");
 
